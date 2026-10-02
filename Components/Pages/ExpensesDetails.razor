@@ -1,0 +1,152 @@
+﻿@page "/reports/expenses-details"
+@layout MainLayout
+@using UmarSons.Mobile.Services
+@using UmarSons.Mobile.Services.Models
+@inject ApiService Api
+
+<div class="report-header">
+    <a href="/home" class="back-btn">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M19 12H5"/>
+            <path d="M12 19l-7-7 7-7"/>
+        </svg>
+    </a>
+    <div class="report-header-title">Expenses Details</div>
+    <div class="report-header-spacer"></div>
+</div>
+
+<div class="report-wrap">
+
+    <div class="filter-card">
+        <div class="filter-row">
+            <div class="filter-field">
+                <label class="filter-label">Expense Type</label>
+                <select class="filter-input" @bind="_filterType">
+                    <option value="">All</option>
+                    <option value="Salary">Salary</option>
+                    <option value="China Warehouse">China Warehouse</option>
+                    <option value="Pakistan Warehouse">Pakistan Warehouse</option>
+                    <option value="Container Expenses">Container Expenses</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+            <div class="filter-field">
+                <label class="filter-label">Payment</label>
+                <select class="filter-input" @bind="_filterPayment">
+                    <option value="">All</option>
+                    <option value="Cash">Cash</option>
+                    <option value="Online">Online</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    @if (_isLoading)
+    {
+        <div class="loading-wrap">
+            <div class="ship-wave"></div>
+            <div class="ship-wave ship-wave-2"></div>
+            <div class="ship-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M2 20a2.4 2.4 0 0 0 2 1 2.4 2.4 0 0 0 2-1 2.4 2.4 0 0 1 2-1 2.4 2.4 0 0 1 2 1 2.4 2.4 0 0 0 2 1 2.4 2.4 0 0 0 2-1 2.4 2.4 0 0 1 2-1 2.4 2.4 0 0 1 2 1 2.4 2.4 0 0 0 2 1 2.4 2.4 0 0 0 2-1" />
+                    <path d="M4 18l-1-5h18l-1 5" />
+                    <path d="M5 13V7l7-3 7 3v6" />
+                    <path d="M9 13V9h6v4" />
+                </svg>
+            </div>
+            <div class="ship-loader-text">Loading expenses...</div>
+        </div>
+    }
+    else if (_error != null)
+    {
+        <div class="empty-state" style="color:#b91c1c;">@_error</div>
+    }
+    else
+    {
+        <div class="ledger-list">
+            @if (Filtered.Count == 0)
+            {
+                <div class="empty-state">No expenses found</div>
+            }
+            else
+            {
+                @foreach (var e in Filtered)
+                {
+                    <div class="expense-card">
+                        <div class="expense-top">
+                            <div class="expense-type">@e.ExpenseType</div>
+                            <div class="expense-amount">Rs @e.Amount.ToString("N2")</div>
+                        </div>
+                        <div class="expense-desc">@e.Description</div>
+
+                        <div class="expense-meta">
+                            <div class="meta-item">
+                                <span class="meta-label">Date</span>
+                                <span class="meta-value">@e.Date.ToString("yyyy-MM-dd")</span>
+                            </div>
+                            <div class="meta-item">
+                                <span class="meta-label">Given To</span>
+                                <span class="meta-value">@e.GivenTo</span>
+                            </div>
+                            <div class="meta-item">
+                                <span class="meta-label">Payment</span>
+                                <span class="meta-value">
+                                    <span class="badge @(e.PaymentMethod == "Cash" ? "badge-cash" : "badge-online")">@e.PaymentMethod</span>
+                                </span>
+                            </div>
+                            <div class="meta-item">
+                                <span class="meta-label">Account</span>
+                                <span class="meta-value">@e.PaidFromAccountName</span>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+
+        <div class="totals-card">
+            <div class="totals-row totals-final">
+                <span>Total Expenses</span>
+                <strong class="text-danger">Rs @Filtered.Sum(x => x.Amount).ToString("N2")</strong>
+            </div>
+        </div>
+    }
+
+</div>
+
+@code {
+    private string _filterType = "";
+    private string _filterPayment = "";
+
+    private List<ExpenseItem> _expenses = new();
+    private bool _isLoading = true;
+    private string? _error = null;
+
+    private List<ExpenseItem> Filtered =>
+        _expenses.Where(e =>
+            (string.IsNullOrEmpty(_filterType) || e.ExpenseType == _filterType) &&
+            (string.IsNullOrEmpty(_filterPayment) || e.PaymentMethod == _filterPayment)
+        ).ToList();
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            var result = await Api.GetExpensesAsync();
+            if (result == null || !result.Success)
+            {
+                _error = "Failed to load expenses.";
+                return;
+            }
+            _expenses = result.Data;
+        }
+        catch (Exception ex)
+        {
+            _error = "Error: " + ex.Message;
+        }
+        finally
+        {
+            _isLoading = false;
+        }
+    }
+}

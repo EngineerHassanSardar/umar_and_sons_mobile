@@ -1,0 +1,13 @@
+﻿@page "/"
+@layout MainLayout
+
+<div class="loading-wrap">>Loading...</div>
+
+@code {
+    [Inject] private NavigationManager Nav { get; set; } = default!;
+
+    protected override void OnInitialized()
+    {
+        Nav.NavigateTo("/login");
+    }
+}

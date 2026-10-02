@@ -1,0 +1,136 @@
+﻿@page "/login"
+@layout MainLayout
+
+<div class="login-screen">
+
+    <!-- Branding -->
+    <div class="login-header">
+        <div class="logo-badge">
+            <svg xmlns="http://www.w3.org/2000/svg" width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 7l9-4 9 4v10l-9 4-9-4V7z" />
+                <path d="M3 7l9 4 9-4" />
+                <path d="M12 11v10" />
+                <path d="M7.5 9.5L16.5 5" />
+                <path d="M16.5 9.5L7.5 5" />
+            </svg>
+        </div>
+        <div class="brand-name">Umar Sons</div>
+        <div class="brand-tagline">Import &amp; Export</div>
+    </div>
+
+    <!-- Login card -->
+    <div class="login-card">
+        <div class="card-title">Welcome Back</div>
+        <div class="card-sub">Sign in to view your reports</div>
+
+        <div class="form-group">
+            <label class="form-label">Username</label>
+            <input type="text" class="form-input" placeholder="Enter your username" @bind="_username" />
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">Email</label>
+            <input type="email" class="form-input" placeholder="you@example.com" @bind="_email" />
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">Password</label>
+            <input type="password" class="form-input" placeholder="Enter your password" @bind="_password" />
+        </div>
+
+        <button class="btn-login" @onclick="HandleLogin" disabled="@_isLoading">
+            @(_isLoading ? "Signing in..." : "Sign In")
+        </button>
+
+        @if (!string.IsNullOrEmpty(_error))
+        {
+            <div style="margin-top: 12px; padding: 10px; background: #fee2e2; color: #b91c1c; border-radius: 8px; text-align: center; font-size: 14px;">
+                @_error
+            </div>
+        }
+
+        <div class="login-footer">© 2026 Technotech Innovation &amp; PVT Ltd</div>
+    </div>
+
+</div>
+
+@code {
+    private string _username = "";
+    private string _email = "";
+    private string _password = "";
+    private bool _isLoading = false;
+    private string _error = "";
+
+    [Inject] private NavigationManager Nav { get; set; } = default!;
+    [Inject] private HttpClient Http { get; set; } = default!;
+
+    private async Task HandleLogin()
+    {
+        _error = "";
+
+        if (string.IsNullOrWhiteSpace(_username) ||
+            string.IsNullOrWhiteSpace(_email) ||
+            string.IsNullOrWhiteSpace(_password))
+        {
+            _error = "Please enter username, email, and password.";
+            return;
+        }
+
+        _isLoading = true;
+
+        try
+        {
+            var response = await Http.PostAsJsonAsync("api/apihome/login", new
+            {
+                Email = _email,
+                Password = _password,
+                RememberMe = true
+            });
+
+            if (response.IsSuccessStatusCode)
+            {
+                var json = await response.Content.ReadAsStringAsync();
+
+                try
+                {
+                    using var doc = System.Text.Json.JsonDocument.Parse(json);
+                    var root = doc.RootElement;
+
+                    // Save user details for later use
+                    if (root.TryGetProperty("data", out var data))
+                    {
+                        var userId = data.TryGetProperty("userId", out var u) ? u.GetString() : "";
+                        var email = data.TryGetProperty("email", out var e) ? e.GetString() : "";
+                        var userName = data.TryGetProperty("userName", out var n) ? n.GetString() : "";
+
+                        await SecureStorage.Default.SetAsync("userId", userId ?? "");
+                        await SecureStorage.Default.SetAsync("email", email ?? "");
+                        await SecureStorage.Default.SetAsync("userName", userName ?? "");
+                    }
+                }
+                catch { /* ignore parse errors, cookie is what matters */ }
+
+                // The auth cookie was automatically stored by HttpClient's CookieContainer.
+                // Every future call will now be authenticated.
+                Nav.NavigateTo("/home");
+            }
+            else if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+            {
+                _error = "Invalid email or password.";
+            }
+            else
+            {
+                _error = "Login failed. Please try again.";
+            }
+        }
+        catch (Exception ex)
+        {
+            _error = "Cannot reach server. Check your connection.";
+            System.Diagnostics.Debug.WriteLine(ex);
+        }
+        finally
+        {
+            _isLoading = false;
+        }
+    }
+}

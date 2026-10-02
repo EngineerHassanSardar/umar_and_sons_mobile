@@ -1,0 +1,158 @@
+﻿@page "/reports/delivery"
+@layout MainLayout
+@using UmarSons.Mobile.Services
+@using UmarSons.Mobile.Services.Models
+@inject ApiService Api
+
+<div class="report-header">
+    <a href="/home" class="back-btn">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M19 12H5"/>
+            <path d="M12 19l-7-7 7-7"/>
+        </svg>
+    </a>
+    <div class="report-header-title">Delivery Report</div>
+    <div class="report-header-spacer"></div>
+</div>
+
+<div class="report-wrap">
+
+    <div class="picker-card">
+        <label class="filter-label">Search Customer</label>
+        <div class="picker-box">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="picker-icon">
+                <circle cx="11" cy="11" r="8"/>
+                <path d="M21 21l-4.35-4.35"/>
+            </svg>
+            <input type="text" class="picker-input" placeholder="Customer name..." @bind="_search" @bind:event="oninput" />
+        </div>
+    </div>
+
+    @if (_isLoading)
+    {
+        <div class="loading-wrap">>Loading deliveries...</div>
+    }
+    else if (_error != null)
+    {
+        <div class="empty-state" style="color:#b91c1c;">@_error</div>
+    }
+    else
+    {
+        <div class="ledger-list">
+            @if (Filtered.Count == 0)
+            {
+                <div class="empty-state">No deliveries found</div>
+            }
+            else
+            {
+                @foreach (var d in Filtered)
+                {
+                    <div class="delivery-card">
+                        <div class="delivery-top">
+                            <div class="delivery-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="1" y="3" width="15" height="13"/>
+                                    <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/>
+                                    <circle cx="5.5" cy="18.5" r="2.5"/>
+                                    <circle cx="18.5" cy="18.5" r="2.5"/>
+                                </svg>
+                            </div>
+                            <div class="delivery-info">
+                                <div class="delivery-customer">@d.CustomerName</div>
+                                <div class="delivery-date">@(d.DeliveryDate?.ToString("yyyy-MM-dd") ?? "-")</div>
+                            </div>
+                            <span class="badge @(d.Status == "Delivered" ? "badge-success" : "badge-warning")">@d.Status</span>
+                        </div>
+
+                        <div class="delivery-meta">
+                            <div class="meta-item">
+                                <span class="meta-label">Shipping Mark</span>
+                                <span class="meta-value">@d.ShippingMark</span>
+                            </div>
+                            <div class="meta-item">
+                                <span class="meta-label">Container</span>
+                                <span class="meta-value">@d.ContainerNo</span>
+                            </div>
+                            <div class="meta-item">
+                                <span class="meta-label">Route</span>
+                                <span class="meta-value">@d.Route</span>
+                            </div>
+                            <div class="meta-item">
+                                <span class="meta-label">Received By</span>
+                                <span class="meta-value">@d.ReceivedBy</span>
+                            </div>
+                        </div>
+
+                        <div class="delivery-stats">
+                            <div class="stat">
+                                <span class="stat-label">Cartons</span>
+                                <span class="stat-value">@d.TotalCartons.ToString("N0")</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-label">Weight</span>
+                                <span class="stat-value">@d.Weight.ToString("N2")</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-label">Amount</span>
+                                <span class="stat-value">@d.Amount.ToString("N2")</span>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+
+        <div class="totals-card">
+            <div class="totals-row">
+                <span>Total Deliveries</span>
+                <strong>@Filtered.Count</strong>
+            </div>
+            <div class="totals-row">
+                <span>Delivered</span>
+                <strong class="text-success">@Filtered.Count(d => d.Status == "Delivered")</strong>
+            </div>
+            <div class="totals-divider"></div>
+            <div class="totals-row totals-final">
+                <span>Total Amount</span>
+                <strong>@Filtered.Sum(d => d.Amount).ToString("N2")</strong>
+            </div>
+        </div>
+    }
+
+</div>
+
+@code {
+    private string _search = "";
+    private List<CustomerDeliveryItem> _deliveries = new();
+    private bool _isLoading = true;
+    private string? _error = null;
+
+    private List<CustomerDeliveryItem> Filtered =>
+        string.IsNullOrWhiteSpace(_search)
+            ? _deliveries
+            : _deliveries.Where(d =>
+                (d.CustomerName ?? "").ToLower().Contains(_search.ToLower()) ||
+                (d.ShippingMark ?? "").ToLower().Contains(_search.ToLower())).ToList();
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            var result = await Api.GetCustomerDeliveryListAllAsync();
+            if (result == null || !result.Success)
+            {
+                _error = "Failed to load deliveries.";
+                return;
+            }
+            _deliveries = result.Data;
+        }
+        catch (Exception ex)
+        {
+            _error = "Error: " + ex.Message;
+        }
+        finally
+        {
+            _isLoading = false;
+        }
+    }
+}

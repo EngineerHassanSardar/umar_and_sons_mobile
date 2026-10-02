@@ -1,0 +1,154 @@
+﻿@page "/reports/grand-summary"
+@layout MainLayout
+@using UmarSons.Mobile.Services
+@inject ApiService Api
+
+<div class="report-header">
+    <a href="/home" class="back-btn">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M19 12H5"/>
+            <path d="M12 19l-7-7 7-7"/>
+        </svg>
+    </a>
+    <div class="report-header-title">Grand Summary</div>
+    <div class="report-header-spacer"></div>
+</div>
+
+<div class="report-wrap">
+
+    <div class="filter-card">
+        <div class="filter-row">
+            <div class="filter-field">
+                <label class="filter-label">From Date</label>
+                <input type="date" class="filter-input" @bind="_fromDate" />
+            </div>
+            <div class="filter-field">
+                <label class="filter-label">To Date</label>
+                <input type="date" class="filter-input" @bind="_toDate" />
+            </div>
+        </div>
+        <button class="filter-btn" @onclick="LoadData" disabled="@_isLoading">
+            @(_isLoading ? "Loading..." : "SEARCH")
+        </button>
+    </div>
+
+    @if (_isLoading)
+    {
+        <div class="loading-wrap">
+            <div class="ship-wave"></div>
+            <div class="ship-wave ship-wave-2"></div>
+            <div class="ship-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M2 20a2.4 2.4 0 0 0 2 1 2.4 2.4 0 0 0 2-1 2.4 2.4 0 0 1 2-1 2.4 2.4 0 0 1 2 1 2.4 2.4 0 0 0 2 1 2.4 2.4 0 0 0 2-1 2.4 2.4 0 0 1 2-1 2.4 2.4 0 0 1 2 1 2.4 2.4 0 0 0 2 1 2.4 2.4 0 0 0 2-1" />
+                    <path d="M4 18l-1-5h18l-1 5" />
+                    <path d="M5 13V7l7-3 7 3v6" />
+                    <path d="M9 13V9h6v4" />
+                </svg>
+            </div>
+            <div class="ship-loader-text">Loading data...</div>
+        </div>
+    }
+    else if (_error != null)
+    {
+        <div class="empty-state" style="color:#b91c1c;">@_error</div>
+    }
+    else
+    {
+        <div class="table-card">
+            <div class="table-head">
+                <div class="col-num">#</div>
+                <div class="col-date">Date</div>
+                <div class="col-amount">Received</div>
+            </div>
+
+            @if (_rows.Count == 0)
+            {
+                <div class="empty-state">No data available</div>
+            }
+            else
+            {
+                @foreach (var row in _rows)
+                {
+                    <div class="table-row">
+                        <div class="col-num">@row.No</div>
+                        <div class="col-date">@row.Date</div>
+                        <div class="col-amount @(row.CashReceived > 0 ? "text-success" : "")">
+                            @row.CashReceived.ToString("N2")
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+
+        <div class="totals-card">
+            <div class="totals-row">
+                <span>Cash Received</span>
+                <strong class="text-success">@_totalReceived.ToString("N2")</strong>
+            </div>
+            <div class="totals-row">
+                <span>Expenses</span>
+                <strong class="text-danger">@_totalExpenses.ToString("N2")</strong>
+            </div>
+            <div class="totals-divider"></div>
+            <div class="totals-row totals-final">
+                <span>Closing Balance</span>
+                <strong>@_closingBalance.ToString("N2")</strong>
+            </div>
+        </div>
+    }
+
+</div>
+
+@code {
+    private DateTime? _fromDate = null;
+    private DateTime? _toDate = null;
+
+    private decimal _totalReceived = 0;
+    private decimal _totalExpenses = 0;
+    private decimal _closingBalance = 0;
+
+    private List<UmarSons.Mobile.Services.Models.GrandSummaryRow> _rows = new();
+
+    private bool _isLoading = false;
+    private string? _error = null;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadData();
+    }
+
+    private async Task LoadData()
+    {
+        _isLoading = true;
+        _error = null;
+
+        try
+        {
+            var from = _fromDate?.ToString("yyyy-MM-dd");
+            var to = _toDate?.ToString("yyyy-MM-dd");
+
+            var result = await Api.GetGrandSummaryAsync(from, to);
+
+            if (result == null || !result.Success)
+            {
+                _error = "Failed to load data.";
+                _rows = new();
+                return;
+            }
+
+            _rows = result.Rows;
+            _totalReceived = result.TotalReceived;
+            _totalExpenses = result.TotalExpenses;
+            _closingBalance = result.ClosingBalance;
+        }
+        catch (Exception ex)
+        {
+            _error = "Error: " + ex.Message;
+            _rows = new();
+        }
+        finally
+        {
+            _isLoading = false;
+        }
+    }
+}

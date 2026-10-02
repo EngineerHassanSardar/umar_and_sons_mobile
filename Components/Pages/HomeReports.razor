@@ -1,0 +1,38 @@
+﻿@page "/home"
+@layout MainLayout
+
+<div class="home-wrap">
+    <div class="home-greeting">Welcome back</div>
+    <div class="home-title">Reports</div>
+
+    <div class="reports-grid">
+        @foreach (var report in Reports)
+        {
+            <a class="report-card" href="@report.Url">
+                <div class="report-icon @report.Color">@report.Icon</div>
+                <div class="report-text">
+                    <div class="report-name">@report.Name</div>
+                    <div class="report-desc">@report.Description</div>
+                </div>
+                <div class="report-arrow">›</div>
+            </a>
+        }
+    </div>
+</div>
+
+@code {
+    private record ReportItem(string Name, string Description, string Icon, string Color, string Url);
+
+    private List<ReportItem> Reports = new()
+    {
+        new("Grand Summary",       "Daily financial overview",           "📊", "orange", "/reports/grand-summary"),
+        new("Customer Ledger",     "Customer account statement",         "👥", "blue",   "/reports/customer-ledger"),
+        new("Expenses Details",    "All expense transactions",           "💰", "red",    "/reports/expenses-details"),
+        new("Container Report",    "Container loading records",          "📦", "purple", "/reports/container-report"),
+        new("Warehouse-I Report",  "China warehouse products",           "🏭", "green",  "/reports/warehouse-1"),
+        new("Warehouse-II Report", "Pakistan warehouse products",        "🏭", "blue",   "/reports/warehouse-2"),
+        new("Delivery Report",     "Customer deliveries",                "🚚", "orange", "/reports/delivery"),
+        new("Customer Report",     "Customer list and balances",         "📄", "green",  "/reports/customer-report"),
+        new("Product History",     "Product movement history",           "📈", "purple", "/reports/product-history"),
+    };
+}

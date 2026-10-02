@@ -1,0 +1,149 @@
+﻿@page "/reports/warehouse-1"
+@layout MainLayout
+@using UmarSons.Mobile.Services
+@using UmarSons.Mobile.Services.Models
+@inject ApiService Api
+
+<div class="report-header">
+    <a href="/home" class="back-btn">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M19 12H5"/>
+            <path d="M12 19l-7-7 7-7"/>
+        </svg>
+    </a>
+    <div class="report-header-title">Warehouse-I Report</div>
+    <div class="report-header-spacer"></div>
+</div>
+
+<div class="report-wrap">
+
+    <div class="picker-card">
+        <label class="filter-label">Search Product</label>
+        <div class="picker-box">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="picker-icon">
+                <circle cx="11" cy="11" r="8"/>
+                <path d="M21 21l-4.35-4.35"/>
+            </svg>
+            <input type="text" class="picker-input" placeholder="Product or mark..." @bind="_search" @bind:event="oninput" />
+        </div>
+    </div>
+
+    @if (_isLoading)
+    {
+        <div class="loading-wrap">
+            <div class="ship-wave"></div>
+            <div class="ship-wave ship-wave-2"></div>
+            <div class="ship-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M2 20a2.4 2.4 0 0 0 2 1 2.4 2.4 0 0 0 2-1 2.4 2.4 0 0 1 2-1 2.4 2.4 0 0 1 2 1 2.4 2.4 0 0 0 2 1 2.4 2.4 0 0 0 2-1 2.4 2.4 0 0 1 2-1 2.4 2.4 0 0 1 2 1 2.4 2.4 0 0 0 2 1 2.4 2.4 0 0 0 2-1" />
+                    <path d="M4 18l-1-5h18l-1 5" />
+                    <path d="M5 13V7l7-3 7 3v6" />
+                    <path d="M9 13V9h6v4" />
+                </svg>
+            </div>
+            <div class="ship-loader-text">Loading products...</div>
+        </div>
+    }
+    else if (_error != null)
+    {
+        <div class="empty-state" style="color:#b91c1c;">@_error</div>
+    }
+    else
+    {
+        <div class="ledger-list">
+            @if (Filtered.Count == 0)
+            {
+                <div class="empty-state">No products found</div>
+            }
+            else
+            {
+                @foreach (var p in Filtered)
+                {
+                    <div class="product-card">
+                        <div class="product-top">
+                            <div class="product-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M20 7h-9a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h9a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/>
+                                    <path d="M16 21V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h11"/>
+                                </svg>
+                            </div>
+                            <div class="product-info">
+                                <div class="product-name">@p.Name</div>
+                                <div class="product-category">@p.ShippingMark</div>
+                            </div>
+                            <div class="product-price">@p.Weight.ToString("N2")</div>
+                        </div>
+
+                        <div class="product-stats">
+                            <div class="stat">
+                                <span class="stat-label">Cartons</span>
+                                <span class="stat-value">@p.NumberofCartons.ToString("N0")</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-label">CBM</span>
+                                <span class="stat-value">@p.CBM.ToString("N2")</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-label">Customer</span>
+                                <span class="stat-value">@p.CustomerName</span>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+
+        <div class="totals-card">
+            <div class="totals-row">
+                <span>Total Products</span>
+                <strong>@Filtered.Count</strong>
+            </div>
+            <div class="totals-row">
+                <span>Total Cartons</span>
+                <strong>@Filtered.Sum(p => p.NumberofCartons).ToString("N0")</strong>
+            </div>
+            <div class="totals-divider"></div>
+            <div class="totals-row totals-final">
+                <span>Total CBM</span>
+                <strong>@Filtered.Sum(p => p.CBM).ToString("N2")</strong>
+            </div>
+        </div>
+    }
+
+</div>
+
+@code {
+    private string _search = "";
+    private List<ProductItem> _products = new();
+    private bool _isLoading = true;
+    private string? _error = null;
+
+    private List<ProductItem> Filtered =>
+        string.IsNullOrWhiteSpace(_search)
+            ? _products
+            : _products.Where(p =>
+                (p.Name ?? "").ToLower().Contains(_search.ToLower()) ||
+                (p.ShippingMark ?? "").ToLower().Contains(_search.ToLower())).ToList();
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            var result = await Api.GetProductsListAsync();
+            if (result == null || !result.Success)
+            {
+                _error = "Failed to load products.";
+                return;
+            }
+            _products = result.Data;
+        }
+        catch (Exception ex)
+        {
+            _error = "Error: " + ex.Message;
+        }
+        finally
+        {
+            _isLoading = false;
+        }
+    }
+}

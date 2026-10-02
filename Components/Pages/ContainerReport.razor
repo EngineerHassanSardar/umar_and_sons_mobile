@@ -1,0 +1,165 @@
+﻿@page "/reports/container-report"
+@layout MainLayout
+@using UmarSons.Mobile.Services
+@using UmarSons.Mobile.Services.Models
+@inject ApiService Api
+
+<div class="report-header">
+    <a href="/home" class="back-btn">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M19 12H5"/>
+            <path d="M12 19l-7-7 7-7"/>
+        </svg>
+    </a>
+    <div class="report-header-title">Container Report</div>
+    <div class="report-header-spacer"></div>
+</div>
+
+<div class="report-wrap">
+
+    <div class="picker-card">
+        <label class="filter-label">Search Container</label>
+        <div class="picker-box">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="picker-icon">
+                <circle cx="11" cy="11" r="8"/>
+                <path d="M21 21l-4.35-4.35"/>
+            </svg>
+            <input type="text" class="picker-input" placeholder="Container no or bill no..." @bind="_search" @bind:event="oninput" />
+        </div>
+    </div>
+
+    @if (_isLoading)
+    {
+        <div class="loading-wrap">
+            <div class="ship-wave"></div>
+            <div class="ship-wave ship-wave-2"></div>
+            <div class="ship-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M2 20a2.4 2.4 0 0 0 2 1 2.4 2.4 0 0 0 2-1 2.4 2.4 0 0 1 2-1 2.4 2.4 0 0 1 2 1 2.4 2.4 0 0 0 2 1 2.4 2.4 0 0 0 2-1 2.4 2.4 0 0 1 2-1 2.4 2.4 0 0 1 2 1 2.4 2.4 0 0 0 2 1 2.4 2.4 0 0 0 2-1" />
+                    <path d="M4 18l-1-5h18l-1 5" />
+                    <path d="M5 13V7l7-3 7 3v6" />
+                    <path d="M9 13V9h6v4" />
+                </svg>
+            </div>
+            <div class="ship-loader-text">Loading containers...</div>
+        </div>
+    }
+    else if (_error != null)
+    {
+        <div class="empty-state" style="color:#b91c1c;">@_error</div>
+    }
+    else
+    {
+        <div class="ledger-list">
+            @if (Filtered.Count == 0)
+            {
+                <div class="empty-state">No containers found</div>
+            }
+            else
+            {
+                @foreach (var c in Filtered)
+                {
+                    <div class="container-card">
+                        <div class="container-top">
+                            <div class="container-no">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M3 7l9-4 9 4v10l-9 4-9-4V7z"/>
+                                    <path d="M3 7l9 4 9-4"/>
+                                    <path d="M12 11v10"/>
+                                </svg>
+                                @c.ContainerNumber
+                            </div>
+                        </div>
+
+                        <div class="container-meta">
+                            <div class="meta-item">
+                                <span class="meta-label">Bill No</span>
+                                <span class="meta-value">@c.BillLandingNumber</span>
+                            </div>
+                            <div class="meta-item">
+                                <span class="meta-label">Loading Date</span>
+                                <span class="meta-value">@(c.LoadingDate?.ToString("yyyy-MM-dd") ?? "-")</span>
+                            </div>
+                            <div class="meta-item">
+                                <span class="meta-label">Importer</span>
+                                <span class="meta-value">@c.ImporterName</span>
+                            </div>
+                            <div class="meta-item">
+                                <span class="meta-label">Exporter</span>
+                                <span class="meta-value">@c.ExporterName</span>
+                            </div>
+                        </div>
+
+                        <div class="container-stats">
+                            <div class="stat">
+                                <span class="stat-label">Cartons</span>
+                                <span class="stat-value">@c.TotalCartons.ToString("N0")</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-label">Weight</span>
+                                <span class="stat-value">@c.TotalWeight.ToString("N2")</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-label">CBM</span>
+                                <span class="stat-value">@c.TotalCBM.ToString("N2")</span>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+
+        <div class="totals-card">
+            <div class="totals-row">
+                <span>Total Containers</span>
+                <strong>@Filtered.Count</strong>
+            </div>
+            <div class="totals-row">
+                <span>Total Weight</span>
+                <strong>@Filtered.Sum(c => c.TotalWeight).ToString("N2")</strong>
+            </div>
+            <div class="totals-divider"></div>
+            <div class="totals-row totals-final">
+                <span>Total CBM</span>
+                <strong>@Filtered.Sum(c => c.TotalCBM).ToString("N2")</strong>
+            </div>
+        </div>
+    }
+
+</div>
+
+@code {
+    private string _search = "";
+    private List<ContainerItem> _containers = new();
+    private bool _isLoading = true;
+    private string? _error = null;
+
+    private List<ContainerItem> Filtered =>
+        string.IsNullOrWhiteSpace(_search)
+            ? _containers
+            : _containers.Where(c =>
+                (c.ContainerNumber ?? "").ToLower().Contains(_search.ToLower()) ||
+                (c.BillLandingNumber ?? "").ToLower().Contains(_search.ToLower())).ToList();
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            var result = await Api.GetContainersListAsync();
+            if (result == null || !result.Success)
+            {
+                _error = "Failed to load containers.";
+                return;
+            }
+            _containers = result.Data;
+        }
+        catch (Exception ex)
+        {
+            _error = "Error: " + ex.Message;
+        }
+        finally
+        {
+            _isLoading = false;
+        }
+    }
+}

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <title>UmarSons.Mobile</title>
+    <base href="/" />
+    <link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="app.css" />
+    <link rel="stylesheet" href="UmarSons.Mobile.styles.css" />
+    <link rel="icon" href="data:,">
+</head>
+
+<body>
+
+    <div class="status-bar-safe-area"></div>
+
+    <div id="app">Loading...</div>
+
+    <!-- Diagnostic error display (temporary) -->
+    <div id="real-error" style="display:none; position:fixed; bottom:0; left:0; right:0; max-height:60%; overflow:auto; background:#7f1d1d; color:#fff; padding:14px; font-family:monospace; font-size:11px; z-index:99999; white-space:pre-wrap;"></div>
+
+    <div id="blazor-error-ui" data-nosnippet style="display:none;">
+        An unhandled error has occurred.
+        <a href="." class="reload">Reload</a>
+        <span class="dismiss">🗙</span>
+    </div>
+
+    <script src="_framework/blazor.webview.js" autostart="false"></script>
+
+    <script>
+        window.addEventListener("error", function (e) {
+            var box = document.getElementById("real-error");
+            if (box) {
+                box.style.display = "block";
+                box.textContent += "[window.error] " + (e.message || "") + "\n" + (e.filename || "") + ":" + (e.lineno || "") + "\n\n";
+            }
+        });
+
+        window.addEventListener("unhandledrejection", function (e) {
+            var box = document.getElementById("real-error");
+            if (box) {
+                box.style.display = "block";
+                box.textContent += "[unhandled promise] " + (e.reason && e.reason.message ? e.reason.message : String(e.reason)) + "\n\n";
+            }
+        });
+    </script>
+
+</body>
+
+</html>
