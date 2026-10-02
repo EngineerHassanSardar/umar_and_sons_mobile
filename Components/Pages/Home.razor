@@ -19,7 +19,7 @@
 @code {
     protected override void OnInitialized()
     {
-        // Schedule navigation without blocking the render
+        
         _ = Task.Run(async () =>
         {
             await Task.Delay(1500);

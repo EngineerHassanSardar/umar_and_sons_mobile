@@ -18,7 +18,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("UmarSons.Mobile")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0+71945367d47ecb06e9cd472bd1a986817f2f95d1")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0+32c5e7d7759950030f069482b0664f08c6693ce8")]
 [assembly: System.Reflection.AssemblyProductAttribute("UmarSons.Mobile")]
 [assembly: System.Reflection.AssemblyTitleAttribute("UmarSons.Mobile")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

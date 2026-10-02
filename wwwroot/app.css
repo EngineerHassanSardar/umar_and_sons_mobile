@@ -1465,3 +1465,40 @@ main {
         gap: 18px;
     }
 }
+
+/* ============ Password show/hide toggle ============ */
+.password-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.password-input {
+    padding-right: 48px !important;
+}
+
+.password-toggle {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    border: 0;
+    padding: 6px;
+    color: #94a3b8;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    transition: color 0.15s ease, background 0.15s ease;
+}
+
+    .password-toggle:hover {
+        color: #ff9b44;
+        background: rgba(255, 155, 68, 0.08);
+    }
+
+    .password-toggle:active {
+        transform: translateY(-50%) scale(0.95);
+    }
