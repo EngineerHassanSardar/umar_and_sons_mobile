@@ -1,4 +1,4 @@
-<api type="debug" assembly-name="UmarSons.Mobile" mvid="b9ea21702fa4443c820249d0e34084ba">
+<api type="debug" assembly-name="UmarSons.Mobile" mvid="93b07e5e6bed4b86a9da0ca3b8485150">
   <java-to-managed>
     <entry java-name="crc647cec9cf27c71cd7a/MainActivity" managed-name="UmarSons.Mobile.MainActivity, UmarSons.Mobile" managed-type-token-id="33554442" />
     <entry java-name="crc647cec9cf27c71cd7a/MainApplication" managed-name="UmarSons.Mobile.MainApplication, UmarSons.Mobile" managed-type-token-id="33554443" />

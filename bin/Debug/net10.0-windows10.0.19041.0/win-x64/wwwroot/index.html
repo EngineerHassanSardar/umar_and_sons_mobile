@@ -27,23 +27,23 @@
     </div>
 
     <script src="_framework/blazor.webview.js" autostart="false"></script>
-
+    <script src="js/ledger-export.js"></script>
     <script>
-        window.addEventListener("error", function (e) {
-            var box = document.getElementById("real-error");
-            if (box) {
-                box.style.display = "block";
-                box.textContent += "[window.error] " + (e.message || "") + "\n" + (e.filename || "") + ":" + (e.lineno || "") + "\n\n";
-            }
-        });
+                window.addEventListener("error", function (e) {
+                    var box = document.getElementById("real-error");
+                    if (box) {
+                        box.style.display = "block";
+                        box.textContent += "[window.error] " + (e.message || "") + "\n" + (e.filename || "") + ":" + (e.lineno || "") + "\n\n";
+                    }
+                });
 
-        window.addEventListener("unhandledrejection", function (e) {
-            var box = document.getElementById("real-error");
-            if (box) {
-                box.style.display = "block";
-                box.textContent += "[unhandled promise] " + (e.reason && e.reason.message ? e.reason.message : String(e.reason)) + "\n\n";
-            }
-        });
+                window.addEventListener("unhandledrejection", function (e) {
+                    var box = document.getElementById("real-error");
+                    if (box) {
+                        box.style.display = "block";
+                        box.textContent += "[unhandled promise] " + (e.reason && e.reason.message ? e.reason.message : String(e.reason)) + "\n\n";
+                    }
+                });
     </script>
 
 </body>

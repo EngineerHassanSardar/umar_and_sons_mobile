@@ -21,6 +21,10 @@
       "PackagePath": "staticwebassets\\index.html"
     },
     {
+      "Id": "D:\\UmarSons.Mobile\\UmarSons.Mobile\\wwwroot\\js\\ledger-export.js",
+      "PackagePath": "staticwebassets\\js\\ledger-export.js"
+    },
+    {
       "Id": "D:\\UmarSons.Mobile\\UmarSons.Mobile\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.min.css",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.min.css"
     },

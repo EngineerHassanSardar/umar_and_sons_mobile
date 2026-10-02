@@ -1,0 +1,8 @@
+<api type="release" assembly-name="UmarSons.Mobile" mvid="70080e6d7d394d829f93b5f2e8acccda">
+  <module assembly-name="UmarSons.Mobile" mvid="70080e6d7d394d829f93b5f2e8acccda" mvid-bytes="bQ4IcDl9gk2fk7Xy6KzM2g==">
+    <types-scratch>
+      <entry key="crc647cec9cf27c71cd7a/MainActivity" java-name="crc647cec9cf27c71cd7a/MainActivity" managed-type-name="UmarSons.Mobile.MainActivity" token="33554441" />
+      <entry key="crc647cec9cf27c71cd7a/MainApplication" java-name="crc647cec9cf27c71cd7a/MainApplication" managed-type-name="UmarSons.Mobile.MainApplication" token="33554442" />
+    </types-scratch>
+  </module>
+</api>

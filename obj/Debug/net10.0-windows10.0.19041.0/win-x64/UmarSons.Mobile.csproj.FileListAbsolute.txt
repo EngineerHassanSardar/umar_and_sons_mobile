@@ -591,3 +591,4 @@ D:\UmarSons.Mobile\UmarSons.Mobile\obj\Debug\net10.0-windows10.0.19041.0\win-x64
 D:\UmarSons.Mobile\UmarSons.Mobile\obj\Debug\net10.0-windows10.0.19041.0\win-x64\resizetizer\r\splash.scale-200.png
 D:\UmarSons.Mobile\UmarSons.Mobile\obj\Debug\net10.0-windows10.0.19041.0\win-x64\resizetizer\r\splash.scale-400.png
 D:\UmarSons.Mobile\UmarSons.Mobile\obj\Debug\net10.0-windows10.0.19041.0\win-x64\UmarSons.Mobile.sourcelink.json
+D:\UmarSons.Mobile\UmarSons.Mobile\bin\Debug\net10.0-windows10.0.19041.0\win-x64\wwwroot\js\ledger-export.js

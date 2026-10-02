@@ -3,12 +3,13 @@
 @using UmarSons.Mobile.Services
 @using UmarSons.Mobile.Services.Models
 @inject ApiService Api
+@inject IJSRuntime JS
 
 <div class="report-header">
     <a href="/home" class="back-btn">
         <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M19 12H5"/>
-            <path d="M12 19l-7-7 7-7"/>
+            <path d="M19 12H5" />
+            <path d="M12 19l-7-7 7-7" />
         </svg>
     </a>
     <div class="report-header-title">Customer Ledger</div>
@@ -23,8 +24,8 @@
         <div class="picker-card">
             <div class="picker-box">
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="picker-icon">
-                    <circle cx="11" cy="11" r="8"/>
-                    <path d="M21 21l-4.35-4.35"/>
+                    <circle cx="11" cy="11" r="8" />
+                    <path d="M21 21l-4.35-4.35" />
                 </svg>
                 <input type="text" class="picker-input" placeholder="Search customer..." @bind="_search" @bind:event="oninput" />
             </div>
@@ -89,6 +90,17 @@
             <button class="back-to-list-btn" @onclick="BackToList">← Change Customer</button>
         </div>
 
+        <!-- ============ EXPORT BUTTONS ============ -->
+        <div class="export-bar">
+            <button class="export-btn" @onclick="DownloadPdf" disabled="@_isExporting">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                    <polyline points="7 10 12 15 17 10" />
+                    <line x1="12" y1="15" x2="12" y2="3" />
+                </svg>
+                @(_isExporting ? "Saving..." : "Download PDF")
+            </button>
+        </div>
         @if (_isLoading)
         {
             <div class="loading-wrap">
@@ -183,6 +195,7 @@
     private CustomerLedgerSummary? _summary = null;
 
     private bool _isLoading = false;
+    private bool _isExporting = false;   // 👈 ADDED
     private string? _error = null;
 
     private List<CustomerLedgerListItem> FilteredCustomers =>
@@ -251,5 +264,60 @@
         _entries = new();
         _summary = null;
         _error = null;
+    }
+
+
+
+    private async Task DownloadPdf()
+    {
+        if (_selected == null || _summary == null) return;
+
+        _isExporting = true;
+        _error = null;
+
+        try
+        {
+            // 1. Ask JS to build the PDF and return base64
+            var base64 = await JS.InvokeAsync<string>("ledgerExport.buildPdfBase64",
+                _selected.Name,
+                _selected.Phone ?? "",
+                _entries,
+                _summary);
+
+            if (string.IsNullOrEmpty(base64))
+            {
+                _error = "PDF was empty.";
+                return;
+            }
+
+            // 2. Write the file from C#
+            var bytes = Convert.FromBase64String(base64);
+
+            var safeName = string.Join("_",
+                _selected.Name.Split(Path.GetInvalidFileNameChars(),
+                    StringSplitOptions.RemoveEmptyEntries));
+
+            var fileName = $"Ledger_{safeName}_{DateTime.Now:yyyy-MM-dd}.pdf";
+
+            var filePath = Path.Combine(FileSystem.AppDataDirectory, fileName);
+            await File.WriteAllBytesAsync(filePath, bytes);
+
+            // 3. Try to open the file so the user sees it
+            await Launcher.Default.OpenAsync(new OpenFileRequest
+            {
+                File = new ReadOnlyFile(filePath)
+            });
+
+            // Optional: show a small confirmation
+            _error = "Saved: " + fileName;
+        }
+        catch (Exception ex)
+        {
+            _error = "PDF failed: " + ex.Message;
+        }
+        finally
+        {
+            _isExporting = false;
+        }
     }
 }

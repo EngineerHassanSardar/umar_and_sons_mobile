@@ -12,12 +12,12 @@
       <RelatedAsset></RelatedAsset>
       <AssetTraitName></AssetTraitName>
       <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>h3padunxlg</Fingerprint>
-      <Integrity>c02mBDdx2X3DVGR+lhy/ioqdkM2ifoW+LQZKqQU4hUo=</Integrity>
+      <Fingerprint>pq6qlrxicu</Fingerprint>
+      <Integrity>X0rOASmoL+XD1JvAB93UdEZg/hDnarLqETBBqQ6nGv0=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      <FileLength>30101</FileLength>
-      <LastWriteTime>Fri, 02 Oct 2026 17:47:31 GMT</LastWriteTime>
+      <FileLength>31025</FileLength>
+      <LastWriteTime>Fri, 02 Oct 2026 19:42:16 GMT</LastWriteTime>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\app.css'))</OriginalItemSpec>
     </StaticWebAsset>
     <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\index.html'))">
@@ -32,13 +32,33 @@
       <RelatedAsset></RelatedAsset>
       <AssetTraitName></AssetTraitName>
       <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>tjhs9tagcj</Fingerprint>
-      <Integrity>2STCgLLnouYkx03HN2XTRw+56aNH5qzPfM2tcK8GKM8=</Integrity>
+      <Fingerprint>ucwmgeszz4</Fingerprint>
+      <Integrity>TtUKlddzUd1GrJRCXWfOdKYcIA+xrGYFuSoTPSl9tCM=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      <FileLength>1973</FileLength>
-      <LastWriteTime>Thu, 01 Oct 2026 11:40:00 GMT</LastWriteTime>
+      <FileLength>2132</FileLength>
+      <LastWriteTime>Fri, 02 Oct 2026 19:39:52 GMT</LastWriteTime>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\index.html'))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\ledger-export.js'))">
+      <SourceType>Package</SourceType>
+      <SourceId>UmarSons.Mobile</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>/</BasePath>
+      <RelativePath>js/ledger-export.js</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <Fingerprint>4yqtyrsss5</Fingerprint>
+      <Integrity>VGQPXQg5Uz68so0ZrZnvW0BAGFfFSsbZqRK/e5xZek8=</Integrity>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <FileLength>3910</FileLength>
+      <LastWriteTime>Fri, 02 Oct 2026 20:16:05 GMT</LastWriteTime>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\ledger-export.js'))</OriginalItemSpec>
     </StaticWebAsset>
     <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\lib\bootstrap\dist\css\bootstrap.min.css'))">
       <SourceType>Package</SourceType>
