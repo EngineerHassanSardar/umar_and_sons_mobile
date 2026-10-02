@@ -8,181 +8,7 @@
     --navy: #0b1220;
     --ink: #0f172a;
     --ink-soft: #334155;
-    --muted: #64748b; /* ============================================================
-   Customer picker list
-   ============================================================ */
-    .customer-picker-list {
-        background: #fff;
-        border-radius: 14px;
-        overflow: hidden;
-        box-shadow: var(--shadow-sm);
-    }
-
-    .customer-picker-item {
-        display: flex;
-        align-items: center;
-        gap: 14px;
-        padding: 14px 16px;
-        border-bottom: 1px solid var(--line);
-        cursor: pointer;
-        transition: background 0.12s ease;
-    }
-
-        .customer-picker-item:last-child {
-            border-bottom: none;
-        }
-
-        .customer-picker-item:active {
-            background: #f1f5f9;
-        }
-
-    .customer-picker-avatar {
-        width: 44px;
-        height: 44px;
-        border-radius: 12px;
-        background: linear-gradient(135deg, #ff9b44 0%, #e88a35 100%);
-        color: #fff;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 17px;
-        font-weight: 800;
-        flex-shrink: 0;
-        box-shadow: 0 4px 12px rgba(255, 155, 68, 0.3);
-    }
-
-    .customer-picker-info {
-        flex: 1;
-        min-width: 0;
-    }
-
-    .customer-picker-name {
-        font-size: 15px;
-        font-weight: 700;
-        color: var(--ink);
-        margin-bottom: 2px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-    }
-
-    .customer-picker-phone {
-        font-size: 12.5px;
-        color: var(--muted);
-        font-variant-numeric: tabular-nums;
-    }
-
-    .customer-picker-arrow {
-        color: #cbd5e1;
-        font-size: 22px;
-        font-weight: 300;
-        flex-shrink: 0;
-    }
-
-    .back-to-list-btn {
-        margin-top: 12px;
-        padding: 8px 14px;
-        font-size: 12.5px;
-        font-weight: 600;
-        color: var(--muted);
-        background: transparent;
-        border: 1px solid var(--line);
-        border-radius: 8px;
-        cursor: pointer;
-        transition: all 0.15s ease;
-    }
-
-        .back-to-list-btn:hover {
-            background: #f1f5f9;
-            color: var(--ink);
-        }
-    /* ============================================================
-   Ship loading animation
-   ============================================================ */
-    .ship-loader {
-        position: relative;
-        padding: 60px 20px 40px;
-        text-align: center;
-        overflow: hidden;
-        min-height: 220px;
-    }
-
-    .ship-icon {
-        display: inline-block;
-        color: var(--brand);
-        animation: shipBob 2.4s ease-in-out infinite;
-        position: relative;
-        z-index: 2;
-    }
-
-    @keyframes shipBob {
-        0%, 100% {
-            transform: translateY(0) rotate(-1deg);
-        }
-
-        50% {
-            transform: translateY(-8px) rotate(1deg);
-        }
-    }
-
-    .ship-wave {
-        position: absolute;
-        left: 0;
-        right: 0;
-        bottom: 48px;
-        height: 8px;
-        background: radial-gradient(ellipse at center, rgba(255, 155, 68, 0.35) 0%, transparent 70%);
-        filter: blur(2px);
-        animation: waveMove 2.8s ease-in-out infinite;
-    }
-
-    .ship-wave-2 {
-        bottom: 32px;
-        animation-duration: 3.6s;
-        animation-delay: -0.8s;
-        opacity: 0.6;
-    }
-
-    @keyframes waveMove {
-        0%, 100% {
-            transform: translateX(-6%) scaleY(1);
-        }
-
-        50% {
-            transform: translateX(6%) scaleY(1.3);
-        }
-    }
-
-    .ship-loader-text {
-        margin-top: 20px;
-        font-size: 13px;
-        font-weight: 600;
-        color: var(--muted);
-        letter-spacing: 0.5px;
-        animation: pulseText 1.8s ease-in-out infinite;
-    }
-
-    @keyframes pulseText {
-        0%, 100% {
-            opacity: 0.6;
-        }
-
-        50% {
-            opacity: 1;
-        }
-    }
-    /* ============================================================
-   Apply ship loader to all screens (replace .loading-wrap)
-   ============================================================ */
-    .loading-wrap {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 60px 20px;
-        color: var(--muted);
-        font-size: 13px;
-    }
-
+    --muted: #64748b;
     --line: #e2e8f0;
     --bg: #f1f5f9;
     --radius: 14px;
@@ -287,6 +113,13 @@ main {
     justify-content: center;
     margin-bottom: 16px;
     box-shadow: 0 10px 28px rgba(255, 155, 68, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+}
+
+.brand-logo {
+    width: 110px;
+    height: 110px;
+    object-fit: contain;
+    border-radius: 22px;
 }
 
 .brand-name {
@@ -510,16 +343,6 @@ main {
     font-size: 20px;
     flex-shrink: 0;
     font-weight: 300;
-}
-
-/* ============ Loading ============ */
-.loading-wrap {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 60px 20px;
-    color: var(--muted);
-    font-size: 13px;
 }
 
 /* ============ Report header ============ */
@@ -836,6 +659,93 @@ main {
     color: var(--muted);
     margin-top: 2px;
 }
+
+/* ============ Customer picker list ============ */
+.customer-picker-list {
+    background: #fff;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+}
+
+.customer-picker-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--line);
+    cursor: pointer;
+    transition: background 0.12s ease;
+}
+
+    .customer-picker-item:last-child {
+        border-bottom: none;
+    }
+
+    .customer-picker-item:active {
+        background: #f1f5f9;
+    }
+
+.customer-picker-avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #ff9b44 0%, #e88a35 100%);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 17px;
+    font-weight: 800;
+    flex-shrink: 0;
+    box-shadow: 0 4px 12px rgba(255, 155, 68, 0.3);
+}
+
+.customer-picker-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.customer-picker-name {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 2px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.customer-picker-phone {
+    font-size: 12.5px;
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
+}
+
+.customer-picker-arrow {
+    color: #cbd5e1;
+    font-size: 22px;
+    font-weight: 300;
+    flex-shrink: 0;
+}
+
+.back-to-list-btn {
+    margin-top: 12px;
+    padding: 8px 14px;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--muted);
+    background: transparent;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+    .back-to-list-btn:hover {
+        background: #f1f5f9;
+        color: var(--ink);
+    }
 
 /* ============ Customer strip ============ */
 .customer-strip {
@@ -1399,106 +1309,90 @@ main {
     color: #92400e !important;
 }
 
-/* ============ Tablet ============ */
-@media (min-width: 600px) {
-    .reports-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 16px;
-    }
-
-    .home-wrap {
-        padding: 32px 28px 40px;
-    }
-
-    .login-card {
-        max-width: 440px;
-    }
-}
-
-@media (min-width: 900px) {
-    .reports-grid {
-        grid-template-columns: repeat(3, 1fr);
-        gap: 18px;
-    }
-}
-/* ============================================================
-   Ship loading animation (used on all report screens)
-   ============================================================ */
-.ship-loader {
+/* ============ Ship loading animation ============ */
+.loading-wrap {
     position: relative;
-    padding: 60px 20px 40px;
-    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 20px;
     overflow: hidden;
     min-height: 220px;
 }
 
 .ship-icon {
-    display: inline-block;
-    color: var(--brand);
-    animation: shipBob 2.4s ease-in-out infinite;
     position: relative;
     z-index: 2;
+    color: var(--brand);
+    animation: shipBob 2.2s ease-in-out infinite;
+    margin-bottom: 12px;
+    display: inline-block;
 }
 
 @keyframes shipBob {
     0%, 100% {
-        transform: translateY(0) rotate(-1deg);
+        transform: translateY(0) rotate(-2deg);
     }
 
     50% {
-        transform: translateY(-8px) rotate(1deg);
+        transform: translateY(-10px) rotate(2deg);
     }
 }
 
 .ship-wave {
     position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 48px;
-    height: 8px;
-    background: radial-gradient(ellipse at center, rgba(255, 155, 68, 0.35) 0%, transparent 70%);
-    filter: blur(2px);
-    animation: waveMove 2.8s ease-in-out infinite;
+    bottom: 40px;
+    left: -50%;
+    width: 200%;
+    height: 60px;
+    background: radial-gradient(ellipse at center, rgba(255, 155, 68, 0.15) 0%, transparent 70%);
+    animation: waveShift 4s linear infinite;
+    border-radius: 50%;
 }
 
 .ship-wave-2 {
-    bottom: 32px;
-    animation-duration: 3.6s;
-    animation-delay: -0.8s;
-    opacity: 0.6;
+    bottom: 55px;
+    background: radial-gradient(ellipse at center, rgba(255, 155, 68, 0.08) 0%, transparent 70%);
+    animation: waveShift 6s linear infinite reverse;
 }
 
-@keyframes waveMove {
-    0%, 100% {
-        transform: translateX(-6%) scaleY(1);
+@keyframes waveShift {
+    0% {
+        transform: translateX(0) scaleY(1);
     }
 
     50% {
-        transform: translateX(6%) scaleY(1.3);
+        transform: translateX(-25%) scaleY(1.1);
+    }
+
+    100% {
+        transform: translateX(-50%) scaleY(1);
     }
 }
 
 .ship-loader-text {
-    margin-top: 20px;
-    font-size: 13px;
-    font-weight: 600;
+    position: relative;
+    z-index: 2;
+    margin-top: 8px;
+    font-size: 14px;
     color: var(--muted);
-    letter-spacing: 0.5px;
-    animation: pulseText 1.8s ease-in-out infinite;
+    font-weight: 500;
+    letter-spacing: 0.3px;
+    animation: textPulse 1.8s ease-in-out infinite;
 }
 
-@keyframes pulseText {
+@keyframes textPulse {
     0%, 100% {
-        opacity: 0.6;
+        opacity: 0.5;
     }
 
     50% {
         opacity: 1;
     }
 }
-/* ============================================================
-   LOGIN — Ship banner (top of login)
-   ============================================================ */
+
+/* ============ Login — Ship banner ============ */
 .ship-banner {
     position: relative;
     height: 120px;
@@ -1549,78 +1443,25 @@ main {
     }
 }
 
-/* ============================================================
-   Report pages — Ship loading animation
-   ============================================================ */
-.ship-loader {
-    position: relative;
-    padding: 60px 20px 40px;
-    text-align: center;
-    overflow: hidden;
-    min-height: 220px;
-}
-
-.ship-icon {
-    display: inline-block;
-    color: var(--brand);
-    animation: shipBob 2.4s ease-in-out infinite;
-    position: relative;
-    z-index: 2;
-}
-
-@keyframes shipBob {
-    0%, 100% {
-        transform: translateY(0) rotate(-1deg);
+/* ============ Tablet ============ */
+@media (min-width: 600px) {
+    .reports-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
     }
 
-    50% {
-        transform: translateY(-8px) rotate(1deg);
+    .home-wrap {
+        padding: 32px 28px 40px;
+    }
+
+    .login-card {
+        max-width: 440px;
     }
 }
 
-.ship-wave {
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 48px;
-    height: 8px;
-    background: radial-gradient(ellipse at center, rgba(255, 155, 68, 0.35) 0%, transparent 70%);
-    filter: blur(2px);
-    animation: waveMove 2.8s ease-in-out infinite;
-}
-
-.ship-wave-2 {
-    bottom: 32px;
-    animation-duration: 3.6s;
-    animation-delay: -0.8s;
-    opacity: 0.6;
-}
-
-@keyframes waveMove {
-    0%, 100% {
-        transform: translateX(-6%) scaleY(1);
-    }
-
-    50% {
-        transform: translateX(6%) scaleY(1.3);
-    }
-}
-
-.ship-loader-text {
-    margin-top: 20px;
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--muted);
-    letter-spacing: 0.5px;
-    animation: pulseText 1.8s ease-in-out infinite;
-}
-
-@keyframes pulseText {
-    0%, 100% {
-        opacity: 0.6;
-    }
-
-    50% {
-        opacity: 1;
+@media (min-width: 900px) {
+    .reports-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 18px;
     }
 }
