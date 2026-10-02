@@ -1,32 +1,26 @@
 ﻿@page "/login"
 @layout MainLayout
 
-<div class="login-screen">
+
 
     <!-- Branding -->
-    <div class="login-header">
-        <div class="logo-badge">
-            <svg xmlns="http://www.w3.org/2000/svg" width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M3 7l9-4 9 4v10l-9 4-9-4V7z" />
-                <path d="M3 7l9 4 9-4" />
-                <path d="M12 11v10" />
-                <path d="M7.5 9.5L16.5 5" />
-                <path d="M16.5 9.5L7.5 5" />
-            </svg>
+    <div class="login-screen">
+        <div class="login-header">
+            <div class="logo-badge">
+                <svg xmlns="http://www.w3.org/2000/svg" width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 7l9-4 9 4v10l-9 4-9-4V7z" />
+                    <path d="M3 7l9 4 9-4" />
+                    <path d="M12 11v10" />
+                </svg>
+            </div>
+            <div class="brand-name">Umar Sons</div>
+            <div class="brand-tagline">Import &amp; Export</div>
         </div>
-        <div class="brand-name">Umar Sons</div>
-        <div class="brand-tagline">Import &amp; Export</div>
-    </div>
 
     <!-- Login card -->
     <div class="login-card">
         <div class="card-title">Welcome Back</div>
         <div class="card-sub">Sign in to view your reports</div>
-
-        <div class="form-group">
-            <label class="form-label">Username</label>
-            <input type="text" class="form-input" placeholder="Enter your username" @bind="_username" />
-        </div>
 
         <div class="form-group">
             <label class="form-label">Email</label>
@@ -55,7 +49,6 @@
 </div>
 
 @code {
-    private string _username = "";
     private string _email = "";
     private string _password = "";
     private bool _isLoading = false;
@@ -67,15 +60,6 @@
     private async Task HandleLogin()
     {
         _error = "";
-
-        if (string.IsNullOrWhiteSpace(_username) ||
-            string.IsNullOrWhiteSpace(_email) ||
-            string.IsNullOrWhiteSpace(_password))
-        {
-            _error = "Please enter username, email, and password.";
-            return;
-        }
-
         _isLoading = true;
 
         try
@@ -96,7 +80,6 @@
                     using var doc = System.Text.Json.JsonDocument.Parse(json);
                     var root = doc.RootElement;
 
-                    // Save user details for later use
                     if (root.TryGetProperty("data", out var data))
                     {
                         var userId = data.TryGetProperty("userId", out var u) ? u.GetString() : "";
@@ -108,10 +91,8 @@
                         await SecureStorage.Default.SetAsync("userName", userName ?? "");
                     }
                 }
-                catch { /* ignore parse errors, cookie is what matters */ }
+                catch { }
 
-                // The auth cookie was automatically stored by HttpClient's CookieContainer.
-                // Every future call will now be authenticated.
                 Nav.NavigateTo("/home");
             }
             else if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)

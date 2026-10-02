@@ -1,13 +1,29 @@
 ﻿@page "/"
 @layout MainLayout
+@inject NavigationManager Nav
 
-<div class="loading-wrap">>Loading...</div>
+<div class="loading-wrap" style="min-height: 70vh;">
+    <div class="ship-wave"></div>
+    <div class="ship-wave ship-wave-2"></div>
+    <div class="ship-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M2 20a2.4 2.4 0 0 0 2 1 2.4 2.4 0 0 0 2-1 2.4 2.4 0 0 1 2-1 2.4 2.4 0 0 1 2 1 2.4 2.4 0 0 0 2 1 2.4 2.4 0 0 0 2-1 2.4 2.4 0 0 1 2-1 2.4 2.4 0 0 1 2 1 2.4 2.4 0 0 0 2 1 2.4 2.4 0 0 0 2-1" />
+            <path d="M4 18l-1-5h18l-1 5" />
+            <path d="M5 13V7l7-3 7 3v6" />
+            <path d="M9 13V9h6v4" />
+        </svg>
+    </div>
+    <div class="ship-loader-text">Loading Umar Sons...</div>
+</div>
 
 @code {
-    [Inject] private NavigationManager Nav { get; set; } = default!;
-
     protected override void OnInitialized()
     {
-        Nav.NavigateTo("/login");
+        // Schedule navigation without blocking the render
+        _ = Task.Run(async () =>
+        {
+            await Task.Delay(1500);
+            await InvokeAsync(() => Nav.NavigateTo("/login"));
+        });
     }
 }

@@ -46,9 +46,6 @@ D:\UmarSons.Mobile\UmarSons.Mobile\obj\Debug\net10.0-ios\iossimulator-x64\resize
 D:\UmarSons.Mobile\UmarSons.Mobile\obj\Debug\net10.0-ios\iossimulator-x64\resizetizer\r\Assets.xcassets\appicon.appiconset\appicon20x20@3x.png
 D:\UmarSons.Mobile\UmarSons.Mobile\obj\Debug\net10.0-ios\iossimulator-x64\resizetizer\r\Assets.xcassets\appicon.appiconset\appicon20x20@2x.png
 D:\UmarSons.Mobile\UmarSons.Mobile\obj\Debug\net10.0-ios\iossimulator-x64\resizetizer\r\Assets.xcassets\appicon.appiconset\Contents.json
-D:\UmarSons.Mobile\UmarSons.Mobile\obj\Debug\net10.0-ios\iossimulator-x64\resizetizer\r\dotnet_bot@3x.png
-D:\UmarSons.Mobile\UmarSons.Mobile\obj\Debug\net10.0-ios\iossimulator-x64\resizetizer\r\dotnet_bot@2x.png
-D:\UmarSons.Mobile\UmarSons.Mobile\obj\Debug\net10.0-ios\iossimulator-x64\resizetizer\r\dotnet_bot.png
 D:\UmarSons.Mobile\UmarSons.Mobile\obj\Debug\net10.0-ios\iossimulator-x64\mauiimage.stamp
 D:\UmarSons.Mobile\UmarSons.Mobile\obj\Debug\net10.0-ios\iossimulator-x64\mauiimage.outputs
 D:\UmarSons.Mobile\UmarSons.Mobile\obj\Debug\net10.0-ios\iossimulator-x64\resizetizer\f\MauiInfo.plist
@@ -363,3 +360,13 @@ D:\UmarSons.Mobile\UmarSons.Mobile\obj\Debug\net10.0-ios\iossimulator-x64\refint
 D:\UmarSons.Mobile\UmarSons.Mobile\obj\Debug\net10.0-ios\iossimulator-x64\UmarSons.Mobile.pdb
 D:\UmarSons.Mobile\UmarSons.Mobile\obj\Debug\net10.0-ios\iossimulator-x64\UmarSons.Mobile.genruntimeconfig.cache
 D:\UmarSons.Mobile\UmarSons.Mobile\obj\Debug\net10.0-ios\iossimulator-x64\ref\UmarSons.Mobile.dll
+D:\UmarSons.Mobile\UmarSons.Mobile\obj\Debug\net10.0-ios\iossimulator-x64\resizetizer\sp\splash_C4FE790E11328EDD28793C887D8FCE85D02B5ED0DE01B04631BCEDEDBA1D5B92.png
+D:\UmarSons.Mobile\UmarSons.Mobile\obj\Debug\net10.0-ios\iossimulator-x64\resizetizer\sp\splash_C4FE790E11328EDD28793C887D8FCE85D02B5ED0DE01B04631BCEDEDBA1D5B92@2x.png
+D:\UmarSons.Mobile\UmarSons.Mobile\obj\Debug\net10.0-ios\iossimulator-x64\resizetizer\sp\splash_C4FE790E11328EDD28793C887D8FCE85D02B5ED0DE01B04631BCEDEDBA1D5B92@3x.png
+D:\UmarSons.Mobile\UmarSons.Mobile\obj\Debug\net10.0-ios\iossimulator-x64\resizetizer\r\splash@3x.png
+D:\UmarSons.Mobile\UmarSons.Mobile\obj\Debug\net10.0-ios\iossimulator-x64\resizetizer\r\splash@2x.png
+D:\UmarSons.Mobile\UmarSons.Mobile\obj\Debug\net10.0-ios\iossimulator-x64\resizetizer\r\splash.png
+D:\UmarSons.Mobile\UmarSons.Mobile\obj\Debug\net10.0-ios\iossimulator-x64\resizetizer\r\appiconfg@3x.png
+D:\UmarSons.Mobile\UmarSons.Mobile\obj\Debug\net10.0-ios\iossimulator-x64\resizetizer\r\appiconfg@2x.png
+D:\UmarSons.Mobile\UmarSons.Mobile\obj\Debug\net10.0-ios\iossimulator-x64\resizetizer\r\appiconfg.png
+D:\UmarSons.Mobile\UmarSons.Mobile\obj\Debug\net10.0-ios\iossimulator-x64\UmarSons.Mobile.sourcelink.json
